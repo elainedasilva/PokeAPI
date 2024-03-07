@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Random Pokémon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Color de fondo */
+            text-align: center; /* Centrar el contenido */
+            padding-top: 50px; /* Espacio superior */
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        h1 {
+            color: #333; /* Color del título */
+        }
+
+        form {
+            margin-top: 20px; /* Espacio superior para el formulario */
+        }
+
+        label {
+            color: #555; /* Color del texto del label */
+        }
+
+        input[type="text"] {
+            padding: 8px; /* Añadir relleno al input */
+            margin: 0 10px; /* Margen alrededor del input */
+            border-radius: 5px; /* Bordes redondeados */
+            border: 1px solid #ccc; /* Borde del input */
+        }
+
+        button[type="submit"] {
+            padding: 8px 20px; /* Añadir relleno al botón */
+            background-color: #007bff; /* Color de fondo del botón */
+            color: #fff; /* Color del texto del botón */
+            border: none; /* Quitar el borde */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3; /* Color de fondo del botón al pasar el ratón */
+        }
+    </style>
+</head>
+<body>
+    <h1>Get Random Pokémon</h1>
+    <form action="/get_random_pokemon" method="post">
+        <label for="pokemon_type">Enter Pokémon Type:</label>
+        <input type="text" id="pokemon_type" name="pokemon_type">
+        <button type="submit">Get Random Pokémon</button>
+        <form action="/dashboard">
+            <button type="submit">Volver al Dashboard</button>
+        </form>
+        <form action="/finalizar">
+            <button type="submit">Finalizar el Programa</button>
+        </form>

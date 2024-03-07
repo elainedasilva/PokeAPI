@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Pokémon or Pokémon with Wider Name</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            text-align: center;
+            color: blue; /* Change color as needed */
+        }
+        p {
+            text-align: center;
+            color: rgb(3, 4, 3); /* Change color as needed */
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pokémon aleatorios con un nombre más largo:</h1>
+    <p><span style="color: rgb(255, 0, 140);">Pokémon Nombre:</span> {{ longest_name_pokemon }}</p>
+    <p><span style="color: rgb(255, 0, 140);">resultado:</span> {{ longest_name_pokemon }}</p>
+    <form action="/dashboard">
+        <button type="submit">Volver al Dashboard</button>
+    </form>
+    <form action="/finalizar">
+        <button type="submit">Finalizar el Programa</button>
+    </form>
+</body>
+</html>

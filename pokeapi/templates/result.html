@@ -1,0 +1,47 @@
+from flask import Flask, request, render_template
+
+app = Flask(__name__)
+
+# Route for the login page
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == 'Ash' and password == 'maestro':
+            # Redirect to the dashboard page upon successful login
+            return redirect('/dashboard')
+        else:
+            error = 'Invalid username or password'
+            return render_template('login.html', error=error)
+    return render_template('login.html')
+
+# Route for the dashboard page
+@app.route('/dashboard', methods=['GET', 'POST'])
+def dashboard():
+    if request.method == 'POST':
+        action = request.form['action']
+        if action == 'get_pokemon_type':
+            # Logic to obtain the type of a Pokémon
+            # Render result template with obtained information
+            return render_template('result.html', result=result)
+        elif action == 'get_random_pokemon':
+            # Logic to obtain a random Pokémon of a specific type
+            # Render result template with obtained information
+            return render_template('result.html', result=result)
+        elif action == 'get_longest_name_pokemon':
+            # Logic to obtain Pokémon with a wider name than a certain type
+            # Render result template with obtained information
+            return render_template('result.html', result=result)
+        elif action == 'get_random_pokemon_with_letters':
+            # Logic to get a random Pokémon containing specific letters in its name and having a stronger type
+            # Render result template with obtained information
+            return render_template('result.html', result=result)
+        elif action == 'get_pokemon_based_on_weather':
+            # Logic to get a Pokémon based on the city's current climate
+            # Render result template with obtained information
+            return render_template('result.html', result=result)
+    return render_template('dashboard.html')
+
+if __name__ == "__main__":
+    app.run(debug=True)

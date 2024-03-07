@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='background.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="login-container">
+        <img src="{{ url_for('static', filename='background.jpg') }}" alt="Logo" style="width: 400px; height: 300px;">
+        <h2>¡Bienvenido, Maestro Pokémon!</h2>
+            <h2>Acceso:</h2>
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
+        <form action="{{ url_for('login') }}" method="post">
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" required><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br><br>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+{% endblock %}

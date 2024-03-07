@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Dashboard</title>
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='fundo.jpg') }}"); /* Replace 'path_to_your_image.jpg' with the path to your image */
+            background-repeat: repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 {color: #007bff; /* Set the color of the heading */
+            text-shadow: 1px 1px 1px #000000; 
+        }
+      
+      
+    </style>
+</head>
+<body>
+    <h1>¡Estás en el Panel de Pokémon!</h1>
+    <label>¡No olvides ingresar las palabras en inglés! 
+        Información: Es importante asegurarse de que la ciudad que está buscando esté registrada en la base de datos de openweathermap.org.
+    </label>
+    <h2>Descubre de qué tipo es tu Pokémon:</h2>
+    <form action="/get_pokemon_info" method="post">
+        <label for="pokemon_name">Introduce el nombre del Pokémon:</label>
+        <input type="text" id="pokemon_name" name="pokemon_name">
+        <button type="submit">Ver el tipo</button>
+    </form>
+    
+    <h2>Descubre Pokémon con el clima de tu ciudad</h2>
+    <form action="/get_weather_based_pokemon" method="post">
+        <label for="city">Ingrese el nombre de la ciudad:</label>
+        <input type="text" id="city" name="city">
+        <button type="submit">Mostrar el Pokémon</button>
+    </form>
+
+    <h2>Consigue un Pokémon al azar:</h2>
+    <form action="/get_random_pokemon" method="post">
+        <label for="pokemon_type_random">Introduce el tipo de Pokémon:</label>
+        <input type="text" id="pokemon_type_random" name="pokemon_type"> <!-- Ensure the name attribute matches -->
+        <button type="submit">Pokémon Surtidos</button>
+    </form>
+    
+    <h2>Consigue un Pokémon con un nombre más largo</h2>
+    <form action="/get_longest_name_pokemon" method="post">
+        <label for="pokemon_type">Introduce el tipo de Pokémon:</label>
+        <input type="text" id="pokemon_type" name="pokemon_type"> <!-- Ensure the name attribute matches -->
+        <button type="submit">Ver Resultado</button>
+    </form>
+    
+    <!-- Add more forms and buttons for additional functionalities as needed -->
+</body>
+</html>

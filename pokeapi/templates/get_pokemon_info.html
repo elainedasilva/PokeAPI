@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Info</title>
+    <style>
+         button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        body {
+            text-align: center;
+            
+        }
+        h1 {
+            color: #007bff; /* Set the color of the heading */
+        }
+        p {
+            color: #6c757d; /* Set the color of the paragraph text */
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Pokémon Información:</h1>
+    <h2>Pokémon nombre: {{ pokemon_name }}</h2>
+    <h2>{{ pokemon_type }}</h2> 
+</body>
+</html>
+<form action="/dashboard">
+    <button type="submit">Volver al Dashboard</button>
+</form>
+<form action="/finalizar">
+    <button type="submit">Finalizar el Programa</button>
+</form>

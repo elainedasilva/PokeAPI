@@ -1,0 +1,236 @@
+from flask import Flask, jsonify, request
+import jwt
+from datetime import datetime, timedelta
+import random
+import requests
+import os
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'sua_chave_secreta_aqui'
+
+# Endpoint de login para autenticar usuários e gerar tokens JWT
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    # Verifique as credenciais do usuário (substitua esta lógica pela sua)
+    if data['username'] == 'Ash' and data['password'] == 'mestrepokemon':
+        # Gere um token JWT com as informações do usuário e um prazo de validade de 1 hora
+        token = jwt.encode({'username': data['username'], 'exp': datetime.utcnow() + timedelta(hours=1)}, app.config['SECRET_KEY'], algorithm='HS256')
+        return jsonify({'token': token}), 200
+    else:
+        return jsonify({'message': 'Credenciais inválidas'}), 401
+
+# Rota protegida que requer autenticação JWT
+@app.route('/recurso_protegido')
+def recurso_protegido():
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({'message': 'Token JWT ausente'}), 401
+    try:
+        payload = jwt.decode(token.split()[1], app.config['SECRET_KEY'], algorithms=['HS256'])
+        return jsonify({'message': 'Acesso concedido para {}'.format(payload['username'])}), 200
+    except jwt.ExpiredSignatureError:
+        return jsonify({'message': 'Token expirado'}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({'message': 'Token inválido'}), 401
+
+# Endpoint PokeAPI
+POKEAPI_BASE_URL = "https://pokeapi.co/api/v2/"
+
+# Define the route for the endpoint for given Pokemon
+@app.route("/tipo/<name>", methods=["GET"])
+def obter_tipo(name):
+    """
+    This function returns the types of a given Pokemon.
+    
+    Parameters:
+    name (str): The name of the Pokemon.
+
+    Returns:
+    JSON: A JSON object containing the types of the given Pokemon.
+    """
+    # Send a GET request to the PokeAPI to get the data of the given Pokemon
+    response = requests.get(f"{POKEAPI_BASE_URL}pokemon/{name}")
+
+    # If the response status code is 200, it means the request was successful
+    if response.status_code == 200:
+        # Get the data from the response and process the JSON
+        pokemon_data = response.json()
+
+        types = [type_['type']['name'] for type_ in pokemon_data['types']]
+        return jsonify({"types": types})
+    else:
+        # Return an error message in a JSON object
+        return jsonify({"message": "Pokemon not found"}), 404
+
+
+# Define the route for the endpoint for random Pokemon of the given type
+@app.route("/random/<type_pokemon>", methods=["GET"])
+def obter_pokemon_random(type_pokemon):
+    """
+    This function returns a random Pokemon of the given type.
+    
+    Parameters:
+    type_pokemon (str): The type of the Pokemon.
+
+    Returns:
+    JSON: A JSON object containing the name of a random Pokemon of the given type.
+    """
+    # Send a GET request to the PokeAPI to get all Pokemon of the given type
+    response = requests.get(f"{POKEAPI_BASE_URL}type/{type_pokemon.lower()}")
+
+    # If the response status code is 200, it means the request was successful
+    if response.status_code == 200:
+        # Get the data from the response and process the JSON
+        type_data = response.json()
+        pokemons_type = type_data['pokemon']
+        pokemon_random = random.choice(pokemons_type)['pokemon']['name']
+        # Return the name of the random Pokemon in a JSON object
+        return jsonify({"pokemon": pokemon_random})
+    else:
+        # Return an error message in a JSON object
+        return jsonify({"message": f"No Pokemon found of type {type_pokemon}"}), 404
+
+
+# Define the route for the endpoint for the Pokemon with the longest name of the given type
+@app.route("/long/<type_pokemon>", methods=["GET"])
+def obter_pokemon_long(type_pokemon):
+    """
+    This function returns the Pokemon with the longest name of the given type.
+    
+    Parameters:
+    type (str): The type of the Pokemon.
+
+    Returns:
+    JSON: A JSON object containing the name of the Pokemon with the longest name of the given type.
+    """
+    # Send a GET request to the PokeAPI to get all Pokemon of the given type
+    response = requests.get(f"{POKEAPI_BASE_URL}type/{type_pokemon.lower()}")
+    
+    # If the response status code is 200, it means the request was successful
+    if response.status_code == 200:
+        # Get the data from the response and process the JSON
+        type_data = response.json()
+        pokemons_type = type_data['pokemon']
+        # Find the Pokemon with the longest name
+        pokemon_long = max(
+            pokemons_type, 
+            key=lambda p: len(p['pokemon']['name'])
+        )['pokemon']['name']
+        # Return the name of the Pokemon with the longest name in a JSON object
+        return jsonify({"pokemon": pokemon_long})
+    else:
+        # Return an error message in a JSON object
+        return jsonify({"message": f"No Pokemon found of type {type_pokemon}"}), 404
+
+
+def get_current_temperature(city):
+    """
+    This function returns the current temperature of a given city.
+    
+    Parameters:
+    city (str): The name of the city.
+
+    Returns:
+    float: The current temperature of the city in Celsius. If the city is not found, returns None.
+    """
+    # Define the API key
+    # api_key = '9c4b1ca6739046059de9aaa9e8481647'
+    api_key = os.environ.get('OPEN_METEO_API_KEY')
+    
+    # Define the URL for the API request
+    url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}'
+    
+    # Send a GET request to the OpenWeatherMap API
+    response = requests.get(url)
+    
+    # If the response status code is 200, it means the request was successful
+    if response.status_code == 200:
+        # Parse the JSON response
+        data = response.json()
+        
+        # Get the current temperature in Kelvin and convert it to Celsius
+        temperature = data['main']['temp'] - 273.15  
+        
+        return temperature
+
+    # If the response status code is not 200, it means the request was unsuccessful
+    else:
+        return None
+
+
+def get_strongest_type(temperature):
+    """
+    This function returns the strongest Pokemon type based on the given temperature.
+    
+    Parameters:
+    temperature (float): The temperature in Celsius.
+
+    Returns:
+    str: The strongest Pokemon type based on the temperature.
+    """
+    # Determine the strongest type based on the temperature
+    if temperature >= 30:
+        return 'fire'
+    elif temperature >= 20 and temperature < 30:
+        return 'earth'
+    elif temperature >= 10 and temperature < 20:
+        return 'normal'
+    elif temperature >= 0 and temperature < 10:
+        return 'water'
+    else:
+        return 'ice'
+    
+
+# Define the route for the endpoint for the strongest Pokemon based on the weather
+@app.route('/pokemon/random/strongest/<city>', methods=['GET'])
+def get_random_pokemon_based_on_weather(city):
+    """
+    This function returns a random Pokemon of the strongest type 
+    based on the current weather of a given city.
+    
+    Parameters:
+    city (str): The name of the city.
+
+    Returns:
+    JSON: A JSON object containing the name of a random Pokemon of the strongest type and the strongest type itself. 
+    If the weather data or the Pokemon type data could not be fetched, returns an error message.
+    """
+    # Get the current temperature of the city
+    temperature = get_current_temperature(city.lower())
+    
+    # If the temperature data was successfully fetched
+    if temperature is not None:
+        # Determine the strongest Pokemon type based on the temperature
+        strongest_type = get_strongest_type(temperature)
+        
+        # Send a GET request to the PokeAPI to get a random Pokemon of the strongest type
+        response = requests.get(f'https://pokeapi.co/api/v2/type/{strongest_type}')
+        
+        # If the response status code is 200, it means the request was successful
+        if response.status_code == 200:
+            # Parse the JSON response
+            data = response.json()
+            
+            # Get the list of Pokemon of the strongest type
+            pokemon_list = data['pokemon']
+            
+            # Choose a random Pokemon from the list
+            random_pokemon = random.choice(pokemon_list)['pokemon']['name']
+            
+            # Return the name of the random Pokemon and the strongest type in a JSON object
+            return jsonify({'random_pokemon': random_pokemon, 'strongest_type': strongest_type})
+        
+        # If the response status code is not 200, it means the request was unsuccessful
+        else:
+            # Return an error message in a JSON object
+            return jsonify({'error': 'Type not found'}), 404
+    
+    # If the temperature data could not be fetched
+    else:
+        # Return an error message in a JSON object
+        return jsonify({'error': 'Failed to fetch current weather'}), 500
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

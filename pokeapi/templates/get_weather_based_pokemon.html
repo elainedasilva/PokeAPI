@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather-based Pokémon</title>
+    <style>
+         button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        body {
+            text-align: center;
+            color: #333; /* Set the color of the text */
+        }
+        h1 {
+            color: #007bff; /* Set the color of the heading */
+        }
+        p {
+            color: #6c757d; /* Set the color of the paragraph text */
+        }
+    </style>
+</head>
+<body>
+    <h1>Pokémon basados ​​en el clima</h1>
+    <p>Ciudad: {{ city }}</p>
+    <p>{{ weather_pokemon }}</p>
+</body>
+</html>
+<form action="/dashboard">
+    <button type="submit">Volver al Dashboard</button>
+</form>
+<form action="/finalizar">
+    <button type="submit">Finalizar el Programa</button>
+</form>

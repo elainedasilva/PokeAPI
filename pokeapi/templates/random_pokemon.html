@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Pokémon Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Color de fondo */
+            text-align: center; /* Centrar el contenido */
+            padding-top: 50px; /* Espacio superior */
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        h1 {
+            color: #333; /* Color del título */
+        }
+
+        p {
+            color: #555; /* Color del texto */
+            margin-top: 20px; /* Espacio superior */
+        }
+    </style>
+</head>
+<body>
+    <h1>Resultado aleatorio de Pokémon</h1>
+    <p>El Pokémon aleatorio del tipo especificado es: {{ random_pokemon }}</p>
+</body>
+</html>
+<form action="/dashboard">
+    <button type="submit">Volver al Dashboard</button>
+</form>
+<form action="/finalizar">
+    <button type="submit">Finalizar el Programa</button>
+</form>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Information</title>
+</head>
+<body>
+    <h2>Pokemon Information</h2>
+    <p>City: {{ city }}</p>
+    <p>Pokemon Name: {{ pokemon_name }}</p>
+    <p>Pokemon Type: {{ pokemon_type }}</p>
+    <p>Random Pokemon: {{ random_pokemon }}</p>
+    <p>Longest Name Pokemon: {{ longest_name_pokemon }}</p>
+    <p>Random Weather Pokemon: {{ random_weather_pokemon }}</p>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
